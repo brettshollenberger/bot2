@@ -82,5 +82,5 @@ production:
   <<: *default
   host: 127.0.0.1
   database: brettbot_production
-  username: ENV["POSTGRES_USERNAME"]
-  password: ENV["POSTGRES_PASSWORD"]
+  username: <%= ENV["POSTGRES_USERNAME"] %>
+  password: <%= ENV["POSTGRES_PASSWORD"] %>

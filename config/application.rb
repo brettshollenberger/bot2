@@ -9,6 +9,7 @@ require "action_controller/railtie"
 require "action_mailer/railtie"
 require "action_view/railtie"
 require "action_cable/engine"
+require "capybara/rails"
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
@@ -21,6 +22,11 @@ module Brettbot
     Bundler.require(*Rails.groups)
 
     Dotenv.load
+
+    Capybara.current_driver = :webkit
+    Capybara.app_host = 'https://newyork.ucbtrainingcenter.com'
+    Rails.instance_variable_set(:@capybara_session, Capybara::Session.new(:webkit, Rails.application))
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
 

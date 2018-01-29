@@ -22,6 +22,7 @@ gem 'devise'
 gem 'sendgrid-ruby'
 gem 'capybara'
 gem 'selenium-webdriver'
+gem 'capybara-webkit'
 gem 'twilio-ruby', '~> 5.6.1'
 gem 'dotenv-rails'
 

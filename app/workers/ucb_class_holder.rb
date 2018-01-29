@@ -40,12 +40,7 @@ class UcbClassHolder
   end
 
   def place_hold(match)
-    require "capybara/rails"
-    Capybara.current_driver = :selenium
-
-    Capybara.javascript_driver = :headless_chrome
-    Capybara.app_host = 'https://newyork.ucbtrainingcenter.com'
-    session = Capybara::Session.new(:selenium, Rails.application)
+    session = Rails.instance_variable_get(:@capybara_session)
 
     url = match.ucb_class.registration_url
     page = "https://newyork.ucbtrainingcenter.com/login?http_referer=#{url}"
@@ -55,7 +50,8 @@ class UcbClassHolder
     session.find(:css, "input[value='Login'][type='submit']").click
     session.find(:css, "a.register_btn").click
     url = session.current_url
-    session.driver.quit
+
+    session.reset!
     return url
   end
 end

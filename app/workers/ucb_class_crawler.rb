@@ -71,8 +71,8 @@ class UcbClassCrawler
           start_time = (start_time =~ /am|pm/) ? start_time : "#{start_time}pm"
           o[:days] = days
           o[:days_per_week] = days.count
-          o[:starts_at] = start_time
-          o[:ends_at] = time.split("-").last
+          o[:starts_at] = EST.parse(start_time)
+          o[:ends_at] = EST.parse(time.split("-").last)
         end
       end
 
@@ -90,8 +90,8 @@ class UcbClassCrawler
         course.history_user_id = historian_user.id
 
         unless course.persisted?
-          course.starts_at = o[:starts_at]
-          course.ends_at   = o[:ends_at]
+          course.starts_at = o[:starts_at].in_time_zone(EST)
+          course.ends_at   = o[:ends_at].in_time_zone(EST)
         end
 
         course
@@ -117,7 +117,7 @@ class UcbClassCrawler
         end
 
         class_matches.select { |c| c.ucb_class.available }.each do |match|
-          UcbClassHolder.perform_async(match.id)
+          UcbClassHolder.new.perform(match.id)
         end
       end
 
