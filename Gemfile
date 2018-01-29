@@ -23,7 +23,7 @@ gem 'sendgrid-ruby'
 gem 'capybara'
 gem 'selenium-webdriver'
 gem 'twilio-ruby', '~> 5.6.1'
-gem 'dotenv'
+gem 'dotenv-rails'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

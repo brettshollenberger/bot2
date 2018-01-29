@@ -18,6 +18,9 @@ Bundler.require(*Rails.groups)
 
 module Brettbot
   class Application < Rails::Application
+    Bundler.require(*Rails.groups)
+
+    Dotenv.load
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
 
