@@ -1,0 +1,40 @@
+2018-01-25T03:06:51.848Z 2437 TID-596q4 INFO: ==================================================================
+2018-01-25T03:06:51.848Z 2437 TID-596q4 INFO:   Please point sidekiq to a Rails 3/4 application or a Ruby file  
+2018-01-25T03:06:51.848Z 2437 TID-596q4 INFO:   to load your worker classes with -r [DIR|FILE].
+2018-01-25T03:06:51.848Z 2437 TID-596q4 INFO: ==================================================================
+2018-01-25T03:06:51.848Z 2437 TID-596q4 INFO: sidekiq [options]
+    -c, --concurrency INT            processor threads to use
+    -d, --daemon                     Daemonize process
+    -e, --environment ENV            Application environment
+    -g, --tag TAG                    Process tag for procline
+    -i, --index INT                  unique process index on this machine
+    -q, --queue QUEUE[,WEIGHT]       Queues to process with optional weights
+    -r, --require [PATH|DIR]         Location of Rails application with workers or file to require
+    -t, --timeout NUM                Shutdown timeout
+    -v, --verbose                    Print more verbose output
+    -C, --config PATH                path to YAML config file
+    -L, --logfile PATH               path to writable logfile
+    -P, --pidfile PATH               path to pidfile
+    -V, --version                    Print version and exit
+    -h, --help                       Show help
+
+2018-01-25T03:07:07.839Z 2452 TID-5hyrw INFO: ==================================================================
+2018-01-25T03:07:07.839Z 2452 TID-5hyrw INFO:   Please point sidekiq to a Rails 3/4 application or a Ruby file  
+2018-01-25T03:07:07.839Z 2452 TID-5hyrw INFO:   to load your worker classes with -r [DIR|FILE].
+2018-01-25T03:07:07.839Z 2452 TID-5hyrw INFO: ==================================================================
+2018-01-25T03:07:07.839Z 2452 TID-5hyrw INFO: sidekiq [options]
+    -c, --concurrency INT            processor threads to use
+    -d, --daemon                     Daemonize process
+    -e, --environment ENV            Application environment
+    -g, --tag TAG                    Process tag for procline
+    -i, --index INT                  unique process index on this machine
+    -q, --queue QUEUE[,WEIGHT]       Queues to process with optional weights
+    -r, --require [PATH|DIR]         Location of Rails application with workers or file to require
+    -t, --timeout NUM                Shutdown timeout
+    -v, --verbose                    Print more verbose output
+    -C, --config PATH                path to YAML config file
+    -L, --logfile PATH               path to writable logfile
+    -P, --pidfile PATH               path to pidfile
+    -V, --version                    Print version and exit
+    -h, --help                       Show help
+

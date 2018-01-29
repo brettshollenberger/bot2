@@ -1,0 +1,11 @@
+<% if @available.count > 0 %>
+  <%= "You've got some matches! There are #{@available.count} classes are available:" %>
+  <% @available.map do |m| %>
+    <%= "#{m.ucb_class.human_dates}: #{m.ucb_class.url}" %>
+  <% end %>
+<% else %>
+  There are no available UCB classes for you right now. But you would like these ones if they open up:
+  <% @unavailable.map do |m| %>
+    <%= "#{m.ucb_class.human_dates}: #{m.ucb_class.url}" %>
+  <% end %>
+<% end %>
