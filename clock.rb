@@ -4,6 +4,6 @@ require_relative './config/environment'
 
 include Clockwork
 
-every(15.seconds, "Crawl UCB") do
+every(5.seconds, "Crawl UCB") do
   UcbClassCrawler.perform_async
 end

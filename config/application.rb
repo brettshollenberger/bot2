@@ -20,6 +20,10 @@ module Brettbot
   class Application < Rails::Application
     Bundler.require(*Rails.groups)
 
+    Capybara.current_driver = :webkit
+    Capybara.app_host = 'https://newyork.ucbtrainingcenter.com'
+    Rails.instance_variable_set(:@capybara_session, Capybara::Session.new(:webkit, Rails.application))
+
     Dotenv.load
 
     require "capybara/rails"
@@ -47,4 +51,3 @@ end
 
 Time.zone = "EST"
 EST = Time.zone
-

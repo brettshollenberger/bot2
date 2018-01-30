@@ -50,7 +50,6 @@ class UcbClassHolder
     session.find(:css, "input[value='Login'][type='submit']").click
     session.find(:css, "a.register_btn").click
     url = session.current_url
-
     session.reset!
     return url
   end
