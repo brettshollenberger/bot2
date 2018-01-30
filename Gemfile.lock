@@ -70,8 +70,6 @@ GEM
     capybara-webkit (1.1.0)
       capybara (~> 2.0, >= 2.0.2)
       json
-<<<<<<< Updated upstream
-=======
     celluloid (0.17.3)
       celluloid-essentials
       celluloid-extras
@@ -93,7 +91,6 @@ GEM
       timers (>= 4.1.1)
     celluloid-supervision (0.20.6)
       timers (>= 4.1.1)
->>>>>>> Stashed changes
     childprocess (0.8.0)
       ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)

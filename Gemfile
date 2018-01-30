@@ -25,7 +25,6 @@ gem 'selenium-webdriver'
 gem 'capybara-webkit'
 gem 'twilio-ruby', '~> 5.6.1'
 gem 'dotenv-rails'
-gem 'capybara-webkit'
 gem 'groupdate'
 gem 'eye'
 
