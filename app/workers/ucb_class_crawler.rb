@@ -3,9 +3,6 @@ require "capybara/rails"
 class UcbClassCrawler
   include Sidekiq::Worker
 
-  Time.zone = "EST"
-  EST = Time.zone
-
   COURSE_TYPES = [
     { days: 1, weeks: 8 },
     { days: 2, weeks: 4 },
@@ -21,6 +18,18 @@ class UcbClassCrawler
                     days = DAYS.clone.concat(DAYS.clone.map { |d| d.pluralize }).concat(ABBREVS)
                     days.clone.concat(days.map { |d| d.capitalize })
                   end
+  end
+
+  def canonical_date(day)
+    ({
+      mon: :monday,
+      tues: :tuesday,
+      wed: :wednesday,
+      thurs: :thursday,
+      fri: :friday,
+      sat: :saturday,
+      sun: :sunday
+    }.with_indifferent_access[day] || day).to_sym.downcase
   end
 
   def perform
@@ -67,16 +76,26 @@ class UcbClassCrawler
             days = raw_days
           end
 
+          days.map! { |d| canonical_date(d) }
+
           start_time = time.split("-").first
           start_time = (start_time =~ /am|pm/) ? start_time : "#{start_time}pm"
+          end_time = time.split("-").last
+          start_hour, start_minute = UcbClass.time_string_to_hour_minute(start_time)
+          end_hour, end_minute = UcbClass.time_string_to_hour_minute(end_time)
           o[:days] = days
           o[:days_per_week] = days.count
-          o[:starts_at] = EST.parse(start_time)
-          o[:ends_at] = EST.parse(time.split("-").last)
+          o[:start_hour]   = start_hour
+          o[:start_minute] = start_minute
+          o[:end_hour]     = end_hour
+          o[:end_minute]   = end_minute
+          o[:starts_at]    = EST.parse(start_time)
+          o[:ends_at]      = EST.parse(time.split("-").last)
         end
       end
 
       historian_user = User.find_by_email("brett.shollenberger@gmail.com")
+      dates_to_save = []
       courses = options.map do |o|
         course = UcbClass.find_or_initialize_by(
           ucb_id: o["ucb_id"]
@@ -86,12 +105,37 @@ class UcbClassCrawler
         course.teacher          = o["Teacher"]
         course.available        = o["Actions"] != "Sold Out"
         course.registration_url = o["url"]
-        course.human_dates = o["Day / Time"]
-        course.history_user_id = historian_user.id
+        course.human_dates      = o["Day / Time"]
+        course.history_user_id  = historian_user.id
+        course.start_hour       = o[:start_hour]
+        course.start_minute     = o[:start_minute]
+        course.end_hour         = o[:end_hour]
+        course.end_minute       = o[:end_minute]
 
         unless course.persisted?
-          course.starts_at = o[:starts_at].in_time_zone(EST)
-          course.ends_at   = o[:ends_at].in_time_zone(EST)
+          course_type = COURSE_TYPES.detect { |c| c[:days] == o[:days].count }
+          weeks = course_type[:weeks]
+          current_week = EST.parse(o["Start Date"]).beginning_of_week
+          dates = []
+
+          weeks.times do |week_number|
+            o[:days].each do |day_of_week|
+              dates.push(current_week.next_week(day_of_week.downcase.to_sym) - 1.week)
+            end
+            current_week = current_week.next_week.beginning_of_week
+          end
+
+          dates.each do |date|
+            d = UcbClassDate.new(
+              ucb_class: course,
+              starts_at: date,
+              start_hour: o[:start_hour],
+              start_minute: o[:start_minute],
+              end_hour: o[:end_hour],
+              end_minute: o[:end_minute]
+            )
+            dates_to_save.push(d)
+          end
         end
 
         course
@@ -99,6 +143,7 @@ class UcbClassCrawler
 
       changed = courses.select(&:should_record_history?)
       courses.each(&:save!)
+      dates_to_save.each(&:save!)
 
       preferences.each do |preference|
         p = preference["preferences"]
@@ -106,7 +151,7 @@ class UcbClassCrawler
         available_before = p["available_before"]
 
         desired = changed.select do |c|
-          (available_after.nil? || c.starts_at >= EST.parse(available_after)) && (available_before.nil? || c.ends_at <= EST.parse(available_before))
+          (available_after.nil? || c.starts_after?(EST.parse(available_after))) && (available_before.nil? || c.ends_before?(EST.parse(available_before)))
         end
 
         class_matches = desired.map do |d|

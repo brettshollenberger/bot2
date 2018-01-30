@@ -9,7 +9,6 @@ require "action_controller/railtie"
 require "action_mailer/railtie"
 require "action_view/railtie"
 require "action_cable/engine"
-require "capybara/rails"
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
@@ -23,6 +22,7 @@ module Brettbot
 
     Dotenv.load
 
+    require "capybara/rails"
     Capybara.current_driver = :webkit
     Capybara.app_host = 'https://newyork.ucbtrainingcenter.com'
     Rails.instance_variable_set(:@capybara_session, Capybara::Session.new(:webkit, Rails.application))
@@ -38,3 +38,13 @@ module Brettbot
     config.generators.system_tests = nil
   end
 end
+
+module Enumerable
+  def count_by(&block)
+    Hash[group_by(&block).map { |key,vals| [key, vals.size] }]
+  end
+end
+
+Time.zone = "EST"
+EST = Time.zone
+

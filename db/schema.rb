@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180129042126) do
+ActiveRecord::Schema.define(version: 20180129222918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,11 +22,24 @@ ActiveRecord::Schema.define(version: 20180129042126) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "ucb_class_dates", force: :cascade do |t|
+    t.integer "ucb_class_id"
+    t.datetime "starts_at"
+    t.integer "start_hour"
+    t.integer "start_minute"
+    t.integer "end_hour"
+    t.integer "end_minute"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "ucb_class_histories", force: :cascade do |t|
     t.integer "ucb_class_id", null: false
     t.string "level", null: false
-    t.datetime "starts_at", null: false
-    t.datetime "ends_at", null: false
+    t.integer "start_hour", null: false
+    t.integer "start_minute", null: false
+    t.integer "end_hour", null: false
+    t.integer "end_minute", null: false
     t.string "teacher", null: false
     t.boolean "available"
     t.string "registration_url"
@@ -41,7 +54,6 @@ ActiveRecord::Schema.define(version: 20180129042126) do
     t.index ["history_started_at"], name: "index_ucb_class_histories_on_history_started_at"
     t.index ["history_user_id"], name: "index_ucb_class_histories_on_history_user_id"
     t.index ["level"], name: "index_ucb_class_histories_on_level"
-    t.index ["starts_at"], name: "index_ucb_class_histories_on_starts_at"
     t.index ["teacher"], name: "index_ucb_class_histories_on_teacher"
     t.index ["ucb_class_id"], name: "index_ucb_class_histories_on_ucb_class_id"
     t.index ["ucb_id"], name: "index_ucb_class_histories_on_ucb_id"
@@ -57,8 +69,10 @@ ActiveRecord::Schema.define(version: 20180129042126) do
 
   create_table "ucb_classes", force: :cascade do |t|
     t.string "level", null: false
-    t.datetime "starts_at", null: false
-    t.datetime "ends_at", null: false
+    t.integer "start_hour", null: false
+    t.integer "start_minute", null: false
+    t.integer "end_hour", null: false
+    t.integer "end_minute", null: false
     t.string "teacher", null: false
     t.boolean "available"
     t.string "registration_url"
@@ -66,7 +80,7 @@ ActiveRecord::Schema.define(version: 20180129042126) do
     t.string "human_dates"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["level", "starts_at", "teacher"], name: "index_ucb_classes_on_level_and_starts_at_and_teacher"
+    t.index ["level", "teacher"], name: "index_ucb_classes_on_level_and_teacher"
     t.index ["ucb_id"], name: "index_ucb_classes_on_ucb_id"
   end
 
