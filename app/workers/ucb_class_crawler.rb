@@ -40,7 +40,7 @@ class UcbClassCrawler
     courses            = active_preferences.group_by(&:class_name)
 
     courses.each do |course, preferences|
-      keys    = html.css(".panel:contains('#{course}') thead th").map { |th| th.text }
+      keys    = html.css(".panel:contains('#{course}') thead th").map { |th| th.text }.uniq
       options = html.css(".panel:contains('#{course}') tbody tr").map do |tr|
         h = keys.zip(tr.css("td").map do |td|
           td.text.gsub(/\n/) {}.strip
