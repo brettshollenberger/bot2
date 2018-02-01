@@ -59,7 +59,7 @@ class UcbClassCrawler
           day_span = !!(days =~ /-/)
 
           if day_span
-            full_day_names = raw_days.all? { |d| DAYS =~ Regexp.new(d.downcase) }
+            full_day_names = raw_days.all? { |d| DAYS.include?(d.downcase) }
 
             fill_with = full_day_names ? DAYS : ABBREVS
             days = []
