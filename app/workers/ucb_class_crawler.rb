@@ -145,13 +145,14 @@ class UcbClassCrawler
       courses.each(&:save!)
       dates_to_save.each(&:save!)
 
-      preferences.each do |preference|
+      preferences.select.each do |preference|
         p = preference["preferences"]
         available_after = p["available_after"]
         available_before = p["available_before"]
 
         desired = changed.select do |c|
-          (available_after.nil? || c.starts_after?(EST.parse(available_after))) && (available_before.nil? || c.ends_before?(EST.parse(available_before)))
+          c.dates.all? { |d| %w(Saturday Sunday).include?(d.starts_at.strftime("%A")) } ||
+            (available_after.nil? || c.starts_after?(EST.parse(available_after))) && (available_before.nil? || c.ends_before?(EST.parse(available_before)))
         end
 
         class_matches = desired.map do |d|
