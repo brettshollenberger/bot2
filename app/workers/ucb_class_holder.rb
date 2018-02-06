@@ -7,6 +7,8 @@ class UcbClassHolder
 
   def perform(class_match_id)
     match = UserUcbClassMatch.find(class_match_id)
+    phone_alert(match)
+
     hold_url = place_hold(match)
 
     if !!(hold_url =~ /course\/register\/\d+/)
@@ -16,7 +18,6 @@ class UcbClassHolder
         hold_url: hold_url
       )
 
-      phone_alert(hold)
       email_alert(hold)
     end
   end
@@ -25,7 +26,7 @@ class UcbClassHolder
     UcbUpdateMailer.red_alert(hold).deliver_now
   end
 
-  def phone_alert(hold)
+  def phone_alert(match)
     account_sid     = ENV["TWILIO_SID"]
     auth_token      = ENV["TWILIO_TOKEN"]
     outgoing_number = ENV["TWILIO_NUMBER"]
@@ -34,7 +35,7 @@ class UcbClassHolder
     @client = Twilio::REST::Client.new account_sid, auth_token
     @client.api.account.calls.create(
       from: "+#{outgoing_number}",
-      to: hold.user.phone,
+      to: match.user.phone,
       url: twilio_url
     )
   end
