@@ -2,7 +2,7 @@ class UcbClassReport
   include Sidekiq::Worker
 
   def perform
-    course_histories = UcbClassHistory.where("history_started_at <= ?", 7.days.ago.beginning_of_day)
+    course_histories = UcbClassHistory.where("history_started_at >= ?", 7.days.ago.beginning_of_day)
     days = course_histories.group_by_day(&:history_started_at)
     ordered_keys = days.keys.sort.reverse
 
