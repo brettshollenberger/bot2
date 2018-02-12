@@ -14,7 +14,7 @@ class UcbClassReport
       histories = days[key]
       if histories.present?
         histories.sort_by(&:history_started_at).each do |h|
-          t.puts "#{h.ucb_id} #{h.human_dates} was #{h.available ? "available" : "full"} at #{h.history_started_at.strftime("%B %e, %Y %I:%M%P %Z")}"
+          t.puts "#{h.level} #{h.human_dates} was #{h.available ? "available" : "full"} at #{h.history_started_at.strftime("%B %e, %Y %I:%M%P %Z")}"
         end
         t.puts
       else
