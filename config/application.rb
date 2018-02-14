@@ -50,4 +50,6 @@ module Enumerable
 end
 
 Time.zone = "EST"
-EST = Time.zone
+EST       = Time.zone
+PT        = ActiveSupport::TimeZone.new("America/Los_Angeles")
+UTC       = ActiveSupport::TimeZone.new("UTC")
