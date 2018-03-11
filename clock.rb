@@ -8,6 +8,6 @@ every(5.seconds, "Crawl UCB") do
   UcbClassCrawler.perform_async
 end
 
-every 1.day, 'report to Mr Brett', at: '22:00' do
+every 6.hours, 'report to Mr Brett' do
   UcbClassReport.perform_async
 end
