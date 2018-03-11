@@ -8,6 +8,7 @@ class UcbClassHolder
   def perform(class_match_id)
     match = UserUcbClassMatch.find(class_match_id)
     phone_alert(match)
+    email_alert(match)
 
     hold_url = place_hold(match)
 
@@ -17,13 +18,11 @@ class UcbClassHolder
         ucb_class_id: match.ucb_class_id,
         hold_url: hold_url
       )
-
-      email_alert(hold)
     end
   end
 
-  def email_alert(hold)
-    UcbUpdateMailer.red_alert(hold).deliver_now
+  def email_alert(match)
+    UcbUpdateMailer.red_alert(match).deliver_now
   end
 
   def phone_alert(match)

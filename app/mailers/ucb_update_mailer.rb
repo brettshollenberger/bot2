@@ -10,10 +10,9 @@ class UcbUpdateMailer < ApplicationMailer
     mail(to: user.email, subject: "UCB Class Match!")
   end
 
-  def red_alert(hold)
-    @hold = hold
-    return if @hold.nil?
+  def red_alert(match)
+    @match = match
 
-    mail(to: @hold.user.email, subject: "RED ALERT: UCB Class Hold")
+    mail(to: @match.user.email, subject: "RED ALERT: UCB Class Hold")
   end
 end
