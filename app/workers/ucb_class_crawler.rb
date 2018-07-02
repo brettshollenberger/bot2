@@ -145,7 +145,7 @@ class UcbClassCrawler
       courses.each(&:save!)
       dates_to_save.each(&:save!)
 
-      preferences.select.each do |preference|
+      preferences.sort_by(&:user_id).select.each do |preference|
         p = preference["preferences"]
         available_after = p["available_after"]
         available_before = p["available_before"]

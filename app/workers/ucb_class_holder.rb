@@ -7,7 +7,7 @@ class UcbClassHolder
 
   def perform(class_match_id)
     match = UserUcbClassMatch.find(class_match_id)
-    phone_alert(match)
+    phone_alert(match) if match.user.phone != "1"
     email_alert(match)
 
     hold_url = place_hold(match)

@@ -14,7 +14,9 @@ class UcbClassReport
       histories = days[key]
       if histories.present?
         histories.sort_by(&:history_started_at).each do |h|
-          t.puts "#{h.level} #{h.human_dates} was #{h.available ? "available" : "full"} at #{h.history_started_at.in_time_zone(PT).strftime("%B %e, %Y %I:%M%P %Z")}"
+          dates = h.ucb_class.dates.sort_by(&:starts_at)
+          first_day = dates.first
+          t.puts "#{h.level} #{h.human_dates} starting on #{first_day.starts_at.in_time_zone(EST).strftime("%B %e")} was #{h.available ? "available" : "full"} at #{h.history_started_at.in_time_zone(EST).strftime("%B %e, %Y %I:%M%P %Z")}"
         end
         t.puts
       else
