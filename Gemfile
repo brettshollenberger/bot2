@@ -5,6 +5,10 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'loofah', '~> 2.2.1'
+gem 'nokogiri', '~> 1.8.2'
+gem 'rails-html-sanitizer', '~> 1.0.4'
+gem 'sinatra', '~> 2.0.2'
 gem 'rails', '~> 5.1.4'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7'
