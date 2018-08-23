@@ -147,13 +147,21 @@ class UcbClassCrawler
 
       preferences.sort_by(&:user_id).select.each do |preference|
         p = preference["preferences"]
-        available_after = p["available_after"]
+        available_after  = p["available_after"]
         available_before = p["available_before"]
+	#start_date_after = Date.parse(p["start_date_after"] || Date.today.to_s)
 
         desired = changed.select do |c|
           c.dates.all? { |d| %w(Saturday Sunday).include?(d.starts_at.strftime("%A")) } ||
-            (available_after.nil? || c.starts_after?(EST.parse(available_after))) && (available_before.nil? || c.ends_before?(EST.parse(available_before)))
-        end
+	    (available_after.nil? || 
+		c.starts_after?(EST.parse(available_after))
+	    ) &&
+	    (available_before.nil? ||
+		c.ends_before?(EST.parse(available_before))
+	    )
+        end.select do |c|
+	  c.ucb_id != 16714
+	end
 
         class_matches = desired.map do |d|
           UserUcbClassMatch.create(
